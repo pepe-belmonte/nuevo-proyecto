@@ -1,0 +1,26 @@
+footer {
+  /* From https://css.glass */
+  background: var(--footer-background);
+  box-shadow: var(--footer-shadow);
+  backdrop-filter: blur(16.3px);
+  -webkit-backdrop-filter: blur(16.3px);
+  border: var(-footer-border);
+
+  border-radius: 8px;
+  width: calc(100% - 8px);
+  max-width: 900px;
+  margin: 4px 0;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  padding: 4px 0;
+
+}
+
+@media screen and (width >= 640px) {
+  footer {
+    margin: 32px 0;
+    width: 100%;
+  }
+}
+
+

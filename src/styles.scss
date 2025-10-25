@@ -1,0 +1,124 @@
+/* You can add global styles to this file, and also import other style files */
+@use "tailwindcss";
+
+:root {
+  // colores
+  --primary-color: #fff;
+  --primary-dark-color: #333;
+  --secondary-color: #d6d6d6;
+  --strong-secondary: #9fccec;
+  --strong-tertiary: #f3afe9;
+  --main-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  --header-background: rgba(255, 255, 255, 0.20);
+  --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --header-border: 1px solid rgba(255, 255, 255, 0.24);
+  --card-background-solid: rgba(255, 255, 255, 0.65);
+  --card-background: rgba(255, 255, 255, 0.20);
+  --card-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --card-border: 1px solid rgba(255, 255, 255, 0.24);
+  --footer-background: rgba(0, 0, 0, 0.31);
+  --footer-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --footer-border: 1px solid rgba(0, 0, 0, 0.17);
+
+
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--primary-color);
+}
+
+body {
+  justify-content: center; 
+  background: var(--main-gradient);
+	background-size: 400% 400%;
+	animation: gradient 35s ease infinite;
+}
+
+h1 {
+  font-size: 2.125rem;
+  font-weight: 700;
+  line-height: 100%;
+  margin: 0;
+}
+
+
+
+main {
+  min-width: 375px;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  /* From https://css.glass */
+  background: var(--card-background);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(16.3px);
+  -webkit-backdrop-filter: blur(16.3px);
+  border: var(--card-border);
+  transition: 0.15s all ease;
+
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
+}
+
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+strong {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: var(--secondary-color);
+  animation: gradient-text 25s ease infinite;
+}
+
+@keyframes gradient-text {
+	0% {
+    color: var(--secondary-color);
+	}
+	50% {
+		color: var(--strong-secondary);
+	}
+	100% {
+		color: var(--strong-tertiary);
+	}
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  visibility: visible !important;
+  
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+    opacity: 0.0;
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

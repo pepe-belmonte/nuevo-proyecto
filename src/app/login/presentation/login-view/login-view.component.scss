@@ -1,0 +1,223 @@
+@use "sass:math";
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+}
+.login-card {
+  background: var(--card-background-solid);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(16.3px);
+  -webkit-backdrop-filter: blur(16.3px);
+  border: var(--card-border);
+  border-radius: 16px;
+  color: var(--primary-dark-color);
+  padding: 24px 24px 32px;
+  overflow: hidden;
+  display: block;
+  flex-direction: row;
+  position: relative;
+  transition: all 0.15s;
+  width: 24rem;
+  
+
+  &.login-size {
+    min-height: 20rem;
+  }
+  &.register-size {
+    min-height: 38rem;
+  }
+
+  .login {
+    top: 0;
+    position: absolute;
+    transition: all 0.5s;
+    transform: translateX(0%);
+    &.inactive {
+      transform: translateX(-150%);
+    }
+  }
+  .register {
+    position: absolute;
+    top: 0;
+    transition: all 0.5s;
+    transform: translateX(0%);
+    &.inactive {
+      transform: translateX(150%);    }
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+
+  .login-image {
+    border-radius: 8px;
+    background-color: #D397FD;
+  }
+
+  fieldset {
+    padding: 4px;
+    min-height: 4.6rem;
+  }
+}
+
+.login-done, .register-done {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+
+.shake-form {
+  animation: shake 0.15s 3;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5px, 5px) rotate(5deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-5px, 5px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+// fiesta de confeti
+.confeti-container {
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* fireworks
+//https://codepen.io/hmaw/pen/qBEMLxV
+*/
+$particles: 50;
+$width: 500;
+$height: 500;
+
+// Create the explosion...
+$box-shadow: ();
+$box-shadow2: ();
+@for $i from 0 through $particles {
+  $box-shadow: $box-shadow,
+               math.random($width) - calc($width / 2) + px
+               math.random($height) - calc($height / 1.2) + px
+               hsl(math.random(360), 100%, 50%);
+  $box-shadow2: $box-shadow2, 0 0 #fff
+}
+@mixin keyframes ($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+
+    @-ms-keyframes #{$animationName} {
+        @content;
+    }
+
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@mixin animation-delay ($settings) {
+    animation-delay: $settings;
+}
+
+@mixin animation-duration ($settings) {
+    animation-duration: $settings;
+}
+
+@mixin animation ($settings) {
+    animation: $settings;
+}
+
+@mixin transform ($settings) {
+    transform: $settings;
+}
+
+.pyro {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  z-index: 1;
+  > .before,  > .after {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    box-shadow: $box-shadow2;
+    @include animation((
+      1s bang ease-out 10 backwards, 
+      1s gravity ease-in 10 backwards, 
+      5s position linear 10 backwards
+    ));
+  }
+      
+  > .after {
+    @include animation-delay((1.25s, 1.25s, 1.25s));
+    @include animation-duration((1.25s, 1.25s, 6.25s));
+  }
+}
+        
+@include keyframes(bang) {
+  to {
+    box-shadow:$box-shadow;
+  }
+}
+    
+@include keyframes(gravity)  {
+  to {
+    @include transform(translateY(200px));
+    opacity: 0;
+  }
+}
+    
+@include keyframes(position) {
+  0%, 19.9% {
+    margin-top: 10%;
+    margin-left: 40%;
+  }
+  20%, 39.9% {
+    margin-top: 40%;
+    margin-left: 30%;
+  }
+  40%, 59.9% {  
+    margin-top: 20%;
+    margin-left: 70%
+  }
+  60%, 79.9% {  
+    margin-top: 30%;
+    margin-left: 20%;
+  }
+  80%, 99.9% {  
+    margin-top: 30%;
+    margin-left: 80%;
+  }
+}

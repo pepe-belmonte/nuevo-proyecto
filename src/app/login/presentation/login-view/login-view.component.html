@@ -1,0 +1,384 @@
+<div class="login-container">
+  <section class="fade-in">
+    <div
+      class="login-card shake-form"
+      [ngClass]="{
+        'shake-form': isShakeForm,
+        'login-size': isShowLogin,
+        'register-size': isShowRegister
+      }"
+    >
+      <div class="login" [ngClass]="{ inactive: !isShowLogin }">
+        <div class="login-content" [ngClass]="{ invisible: isLoginDone }">
+          <h1 class="p-4 text-center">¡Bienvenido!</h1>
+          <p class="mb-4 text-center">
+            Introduce tu usuario y contraseña para acceder
+          </p>
+          <form [formGroup]="formLogin" class="login-form">
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <input
+                  class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  placeholder="Introduce tu usuario"
+                  formControlName="username"
+                />
+              </label>
+              @if (formUtils.checkStatus(formLogin.get('username'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formLogin.get("username"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <div class="relative">
+                  <input
+                    class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                    [attr.type]="isHideLoginPassword ? 'password' : 'text'"
+                    placeholder="Contraseña"
+                    formControlName="password"
+                  />
+                  <button
+                    type="button"
+                    (click)="isHideLoginPassword = !isHideLoginPassword"
+                    class="absolute top-0 end-0 p-3.5 rounded-e-md dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  >
+                    @if (isHideLoginPassword) {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                      />
+                    </svg>
+                    } @else {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                      />
+                    </svg>
+                    }
+                  </button>
+                </div>
+              </label>
+              @if (formUtils.checkStatus(formLogin.get('password'))) {
+
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formLogin.get("password"))
+              }}</span>
+              }
+            </fieldset>
+
+            <div class="flex items-center justify-between">
+              <button
+                (click)="
+                  isShowRegister = !isShowRegister; isShowLogin = !isShowLogin
+                "
+                class="bg-transparent border-solid border-2 border-indigo-500 hover:bg-indigo-400 text-slate-900 hover:text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                type="button"
+              >
+                Registrarse
+              </button>
+              <button
+                (click)="onLogin()"
+                class="inline-flex bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                [ngClass]="{ 'cursor-not-allowed': isLoading() }"
+                [disabled]="isLoading()"
+                type="button"
+              >
+                @if (isLoading()) {
+                <svg
+                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Conectando...</span>
+                }@else {
+                <span>Login</span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+        @if(isLoginDone){
+        <div
+          class="fade-in login-done flex flex-col align-middle items-center justify-center gap-8"
+        >
+          <span class="text-lg font-semibold"
+            >Login correcto. ¡Bienvenido!</span
+          >
+          <span class="text-sm">Te vamos a redigir a la página de inicio</span>
+        </div>
+        }
+      </div>
+
+      <div class="register" [ngClass]="{ inactive: !isShowRegister }">
+        <div class="register-content" [ngClass]="{ invisible: isRegisterDone }">
+          <h1 class="p-4 text-center">¡Registro!</h1>
+          <p class="mb-4 text-center">
+            Introduce tus datos para crea un nuevo usuario
+          </p>
+          <form [formGroup]="formRegister" class="register-form">
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <input
+                  class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  placeholder="Nombre"
+                  formControlName="name"
+                />
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('name'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("name"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <input
+                  class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  placeholder="Apellidos"
+                  formControlName="surname"
+                />
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('surname'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("surname"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <input
+                  class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  placeholder="Nombre de usuario"
+                  formControlName="username"
+                />
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('username'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("username"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <input
+                  class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  type="email"
+                  placeholder="email"
+                  formControlName="email"
+                  [email]="true"
+                />
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('email'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("email"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="block tracking-wide text-gray-600">
+                <div class="relative">
+                  <input
+                    class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                    [attr.type]="isHidePassword ? 'password' : 'text'"
+                    placeholder="Contraseña"
+                    formControlName="password"
+                  />
+                  <button
+                    type="button"
+                    (click)="isHidePassword = !isHidePassword"
+                    class="absolute top-0 end-0 p-3.5 rounded-e-md dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  >
+                    @if (isHidePassword) {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                      />
+                    </svg>
+                    } @else {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                      />
+                    </svg>
+                    }
+                  </button>
+                </div>
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('password'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("password"))
+              }}</span>
+              }
+            </fieldset>
+
+            <fieldset>
+              <label class="tracking-wide text-gray-600">
+                <div class="relative">
+                  <input
+                    class="appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                    [attr.type]="isHideRepassword ? 'password' : 'text'"
+                    placeholder="Repite la contraseña"
+                    formControlName="repassword"
+                  />
+                  <button
+                    type="button"
+                    (click)="isHideRepassword = !isHideRepassword"
+                    class="absolute top-0 end-0 p-3.5 rounded-e-md dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  >
+                    @if (isHideRepassword) {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                      />
+                    </svg>
+                    } @else {
+                    <svg
+                      class="flex-shrink-0 size-3.5 text-gray-400 dark:text-neutral-600"
+                      width="24"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                    >
+                      <path
+                        d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                      />
+                    </svg>
+                    }
+                  </button>
+                </div>
+              </label>
+              @if (formUtils.checkStatus(formRegister.get('repassword'))) {
+              <span class="text-red-500 text-xs font-semibold italic">{{
+                formUtils.getErrorMessage(formRegister.get("repassword"))
+              }}</span>
+              }
+            </fieldset>
+
+            <div class="flex items-center justify-between">
+              <button
+                (click)="
+                  isShowRegister = !isShowRegister; isShowLogin = !isShowLogin
+                "
+                class="bg-transparent border-solid border-2 border-indigo-500 hover:bg-indigo-400 text-slate-900 hover:text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                type="button"
+              >
+                Login
+              </button>
+              <button
+                (click)="onRegister()"
+                class="inline-flex bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                [ngClass]="{ 'cursor-not-allowed': isLoading() }"
+                [disabled]="isLoading()"
+                type="button"
+              >
+                @if (isLoading()) {
+                <svg
+                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Conectando...</span>
+                }@else {
+                <span>Registro</span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+        @if (isRegisterDone) {
+        <div
+          class="fade-in register-done flex flex-col align-middle items-center justify-center gap-8"
+        >
+          <span class="text-lg font-semibold"
+            >Registro completado con éxito</span
+          >
+          <button
+            (click)="isShowRegister = false; isShowLogin = true"
+            class="bg-transparent border-solid border-2 border-indigo-500 hover:bg-indigo-400 text-slate-900 hover:text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+            type="button"
+          >
+            Volver al Login
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>
+
+@if (isShowPyro) {
+<div class="pyro">
+  <div class="before"></div>
+  <div class="after"></div>
+</div>
+}

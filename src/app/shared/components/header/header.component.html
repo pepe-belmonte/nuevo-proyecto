@@ -1,0 +1,39 @@
+<div class="header-sticker">
+  <header class="flex justify-between items-center">
+    <div class="flex items-center">
+      <svg class="w-12 h-12 "  viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <path d="M5,21C4.45,21 3.979,20.804 3.588,20.413C3.196,20.021 3,19.55 3,19L3,5C3,4.45 3.196,3.979 3.588,3.587C3.979,3.196 4.45,3 5,3L19,3C19.55,3 20.021,3.196 20.413,3.587C20.804,3.979 21,4.45 21,5L21,19C21,19.55 20.804,20.021 20.413,20.413C20.021,20.804 19.55,21 19,21L5,21ZM5,19L19,19L19,5L5,19Z" style="fill:url(#_Linear1);fill-rule:nonzero;"/>
+        <g transform="matrix(1,0,0,1,0.33804,2.64798)">
+            <path d="M14.4,15.6L18,12L14.4,8.4L13,9.825L15.175,12L13,14.175L14.4,15.6Z" style="fill:rgb(78,84,200);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-1.01412,-2.70433)">
+            <path d="M9.6,15.6L11,14.175L8.825,12L11,9.825L9.6,8.4L6,12L9.6,15.6Z" style="fill:rgb(230,230,239);fill-rule:nonzero;"/>
+        </g>
+        <defs>
+            <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(18,0,0,18,3,12)"><stop offset="0" style="stop-color:rgb(78,84,200);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(143,148,251);stop-opacity:1"/></linearGradient>
+        </defs>
+      </svg>
+      <span 
+        class="hidden sm:flex self-center text-xl font-semibold whitespace-nowrap dark:text-white">Test de Pepe Belmonte</span>
+    </div>
+    
+    <div class="flex flex-wrap items-center gap-x-5 lg:order-2">
+      <a 
+        class="p-2 rounded-lg hover:bg-indigo-700" 
+        routerLink="/">Inicio</a>
+      @if (!isLogged) { 
+        <a 
+          class="p-2 rounded-lg hover:bg-indigo-700" 
+          routerLink="/login">Login</a>
+
+      }
+      @else {
+        <button 
+          class="p-2 rounded-lg hover:bg-indigo-700" (click)="logout()">Logout</button>
+      }
+    </div>
+  
+  
+  </header>
+</div>
+

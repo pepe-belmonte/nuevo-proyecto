@@ -1,0 +1,13 @@
+<div 
+  (click)="onClickImage()"
+  class="card cursor-pointer">
+    <img 
+      class="rounded-t-lg aspect-video" 
+      loading="lazy" alt="imagen"
+      [src]="'https://picsum.photos/' + image() + '/640/300'" alt="imágen de picsum.photos" />
+    <div class="p-5">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{starship()?.name}}</h5>
+        <p class="mb-3 font-normal text-gray-700 ">{{starship()?.manufacturer}}</p>
+        <p class="mb-3 font-sm text-gray-700">Pasajeros: {{starship()?.passengers}}</p>
+    </div>
+  </div>
