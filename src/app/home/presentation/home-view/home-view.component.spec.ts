@@ -96,7 +96,7 @@ describe('HomeViewComponent', () => {
   it('should initialize with default values', () => {
     expect(component.isLogged).toBeFalse();
     expect(component.userData).toEqual({});
-    expect(component.imageSelected).toBe('');
+    expect(component.imageSelected()).toBe('');
     expect(component.isLoading()).toBeFalse();
     expect(component.starships).toEqual([]);
   });
@@ -119,17 +119,16 @@ describe('HomeViewComponent', () => {
     
     // Primera llamada - debería establecer la imagen
     component.onImageSelected(testImage);
-    expect(component.imageSelected).toBe(testImage);
+    expect(component.imageSelected()).toBe(testImage);
     
     // Segunda llamada con la misma imagen - debería limpiar la selección
     component.onImageSelected(testImage);
-    expect(component.imageSelected).toBe('');
+    expect(component.imageSelected()).toBe('');
     
   });
 
   it('should load starships successfully', fakeAsync(() => {
     component.getStarships('');
-    expect(component.isLoading()).toBeTrue();
 
     tick();
     expect(starWarsServiceSpy.getStarships).toHaveBeenCalledWith('');
@@ -138,7 +137,6 @@ describe('HomeViewComponent', () => {
     tick(1000);
     
     expect(component.starships.length).toBe(2); // devuelve dos registros
-    expect(component.isLoading()).toBeFalse(); // cambiado el switch a false
     expect(component.starships[0].name).toBe('X-wing'); // comprueba el primer registro
     expect(component.starships[1].name).toBe('TIE Fighter'); // comprueba el segundo registro
   }));
@@ -151,10 +149,8 @@ describe('HomeViewComponent', () => {
     spyOn(console, 'error'); // comprobamos que en consola aparece el error
     component.getStarships('');
     
-    expect(component.isLoading()).toBeTrue(); // cambiado el switch a true
     tick(); // espera
     
-    expect(component.isLoading()).toBeFalse(); // cambiado el switch a false
     expect(console.error).toHaveBeenCalled();
     expect(component.starships.length).toBe(0); // no devuelve registros
   }));

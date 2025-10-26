@@ -13,7 +13,7 @@ export class CardComponent {
   clickImage = output<string>();
 
   onClickImage(): void {
-    const img = this.image()??'';
-    this.clickImage.emit(img);
+    const ship = this.starship()?.name??'';
+    this.clickImage.emit(ship);
   }
 }

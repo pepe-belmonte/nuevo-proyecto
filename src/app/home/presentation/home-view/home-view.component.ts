@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { CardComponent } from '../components/card/card.component';
 import { AuthTokenService } from '../../../shared/services/auth-token.service';
 import { StarWarsService } from '../../../shared/apis/starwars.service';
@@ -14,7 +14,8 @@ import { StarshipDTO } from '../../../shared/interfaces/starship.dto';
 export class HomeViewComponent {
   isLogged: boolean = false;
   userData: any = {};
-  imageSelected: string = '';
+  isImageSelected = signal(false);
+  imageSelected = signal('');
   isLoading = signal(false);
   starships: StarshipDTO[] = [];
 
@@ -29,13 +30,21 @@ export class HomeViewComponent {
     });
 
     this.getStarships(''); // carga inicial
+
+    // efect para cambiar el estado 
+    effect(() => {
+      this.isImageSelected.set(false);
+      if (this.imageSelected() !== '' ) {
+        this.isImageSelected.set(true);
+      }
+    });    
   }
 
   onImageSelected($event: string) {
-    if (this.imageSelected == $event) {
-      this.imageSelected = '';
-    } else {
-      this.imageSelected = $event;
+    if (this.imageSelected() === $event ) {
+      this.imageSelected.update(val => '');
+    }else {
+      this.imageSelected.update(val => $event);
     }
   }
 

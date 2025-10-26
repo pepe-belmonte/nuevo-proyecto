@@ -5,9 +5,11 @@
   <p class="p-2.5">
     Esta es tu página de inicio, creada con grid y totalmente responsive.
   </p>
-  @if (imageSelected != '') {
-  <p class="p-2.5">Has seleccionado la imágen {{ imageSelected }}</p>
-  } 
+  @if (isImageSelected()) {
+  <div class="card">
+    <p class="p-2.5">Has seleccionado la imágen {{ imageSelected() }}</p>
+  </div>
+} 
   
   @if (isLoading()) {
   <svg
