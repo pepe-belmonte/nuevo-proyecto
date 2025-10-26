@@ -41,7 +41,7 @@
       <app-card
         [starship]="starship"
         (clickImage)="onImageSelected($event)"
-        image="seed/picsum"
+        [image]="getImage(starship.url)"
         ></app-card>
       } 
     }@placeholder {
