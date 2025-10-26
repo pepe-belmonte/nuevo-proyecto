@@ -31,17 +31,18 @@
     ></path>
   </svg>
   <span>Conectando...</span>
-
   }@else {
   <section class="home-grid">
     <!-- utilizamos -->
-    @defer () { @for (starship of starships; track $index) {
-    <app-card
-      [starship]="starship"
-      (clickImage)="onImageSelected($event)"
-      image="seed/picsum"
-    ></app-card>
-    } }@placeholder {
+    @defer () { 
+      @for (starship of starships; track $index) {
+      <app-card
+        [starship]="starship"
+        (clickImage)="onImageSelected($event)"
+        image="seed/picsum"
+        ></app-card>
+      } 
+    }@placeholder {
     <svg
       class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
       xmlns="http://www.w3.org/2000/svg"

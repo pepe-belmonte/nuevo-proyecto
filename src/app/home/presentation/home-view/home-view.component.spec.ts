@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { HomeViewComponent } from './home-view.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AuthTokenService } from '../../../shared/services/auth-token.service';
 import { StarWarsService } from '../../../shared/apis/starwars.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { StarshipsListDTO } from '../../../shared/interfaces/starships-list.dto';
 
 describe('HomeViewComponent', () => {
@@ -68,7 +67,7 @@ describe('HomeViewComponent', () => {
     authServiceSpy = jasmine.createSpyObj('AuthTokenService', ['getLogged', 'getToken']);
     starWarsServiceSpy = jasmine.createSpyObj('StarWarsService', ['getStarships']);
 
-    // Mock del comportamiento por defecto
+    // Mock de los datos que se van a devolver
     authServiceSpy.getLogged.and.returnValue(of(false));
     authServiceSpy.getToken.and.returnValue({ name: 'Test User' });
     starWarsServiceSpy.getStarships.and.returnValue(of(mockStarshipsResponse));
@@ -93,4 +92,70 @@ describe('HomeViewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should initialize with default values', () => {
+    expect(component.isLogged).toBeFalse();
+    expect(component.userData).toEqual({});
+    expect(component.imageSelected).toBe('');
+    expect(component.isLoading()).toBeFalse();
+    expect(component.starships).toEqual([]);
+  });
+
+  it('should update isLogged and userData when user logs in', () => {
+    authServiceSpy.getLogged.and.returnValue(of(true));
+    const mockUserData = { name: 'Test User' };
+    authServiceSpy.getToken.and.returnValue(mockUserData);
+
+    fixture = TestBed.createComponent(HomeViewComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component.isLogged).toBeTrue();
+    expect(component.userData).toEqual(mockUserData);
+  });
+
+    it('should toggle imageSelected when onImageSelected is called', () => {
+    const testImage = 'test-image.jpg';
+    
+    // Primera llamada - debería establecer la imagen
+    component.onImageSelected(testImage);
+    expect(component.imageSelected).toBe(testImage);
+    
+    // Segunda llamada con la misma imagen - debería limpiar la selección
+    component.onImageSelected(testImage);
+    expect(component.imageSelected).toBe('');
+    
+  });
+
+  it('should load starships successfully', fakeAsync(() => {
+    component.getStarships('');
+    expect(component.isLoading()).toBeTrue();
+
+    tick();
+    expect(starWarsServiceSpy.getStarships).toHaveBeenCalledWith('');
+    
+    // Esperamos que se procesen todas las naves (500ms por nave)
+    tick(1000);
+    
+    expect(component.starships.length).toBe(2); // devuelve dos registros
+    expect(component.isLoading()).toBeFalse(); // cambiado el switch a false
+    expect(component.starships[0].name).toBe('X-wing'); // comprueba el primer registro
+    expect(component.starships[1].name).toBe('TIE Fighter'); // comprueba el segundo registro
+  }));
+
+  it('should handle error when loading starships fails', fakeAsync(() => {
+    const errorMessage = 'Error loading starships';
+    // devuelve error al recuperar los registros
+    starWarsServiceSpy.getStarships.and.returnValue(throwError(() => new Error(errorMessage)));
+    
+    spyOn(console, 'error'); // comprobamos que en consola aparece el error
+    component.getStarships('');
+    
+    expect(component.isLoading()).toBeTrue(); // cambiado el switch a true
+    tick(); // espera
+    
+    expect(component.isLoading()).toBeFalse(); // cambiado el switch a false
+    expect(console.error).toHaveBeenCalled();
+    expect(component.starships.length).toBe(0); // no devuelve registros
+  }));
 });
