@@ -1,0 +1,80 @@
+{
+  "uuid": "6b2fbfd7-2dcf-4702-b613-fe00273a2995",
+  "lastMigration": 32,
+  "name": "Mockoon server",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3002,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "3bec88d4-36d5-4016-bf40-5f69e11bc212",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/user/",
+      "responses": [
+        {
+          "uuid": "1b826e66-e9ba-4889-b78f-dbb97bcc9575",
+          "body": "{\n  \"username\":\"pepe\",\n  \"email\":\"pepe@pepebelmonte.es\",\n  \"name\":\"Jos\\u00e9 Antonio\",\n  \"surname\":\"Belmonte\",\n  \"token\":\"eyJ1c2VybmFtZSI6InBlcGUiLCJlbWFpbCI6InBlcGVAcGVwZWJlbG1vbnRlLmVzIiwibmFtZSI6Ikpvc1x1MDBlOSBBbnRvbmlvIiwic3VybmFtZSI6IkJlbG1vbnRlIn0=\"\n  \n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "3bec88d4-36d5-4016-bf40-5f69e11bc212"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

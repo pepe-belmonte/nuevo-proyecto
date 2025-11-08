@@ -140,8 +140,9 @@ export class LoginViewComponent {
               loginError: err?.error.message
             })
           }else {
+            debugger;
             this.formLogin.get('password')?.setErrors({
-              loginError: err?.message
+              loginError: err?.error.message
             })
           }
         }
