@@ -1,9 +1,9 @@
 <div 
   (click)="onClickImage()"
   class="card cursor-pointer">
-    <div class="flex items-center justify-center h-64">
+    <div class="flex items-center justify-center h-64 overflow-hidden">
       <img 
-        class="rounded-t-lg  w-auto h-full" 
+        class="rounded-t-lg  h-auto w-full mh-full" 
         loading="lazy" 
         [src]="image()" alt="{{starship()?.name}}" />
     </div>
