@@ -1,4 +1,10 @@
 <?php 
+// evita acceder directamente a este archivo
+if (!defined('APP_RUNNING')) {
+    die('Acceso no permitido');
+}
+
+
 // configuración de la conexión
   $host = 'qvf541.pepebelmonte.es';
   $dbname = 'qvf541';

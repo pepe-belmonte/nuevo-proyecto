@@ -1,10 +1,17 @@
 <?php
+
+  // Evita accesos directos a archivos sensibles (por ejemplo db.php)
+  define('APP_RUNNING', true);
+
   // se incluyen los datos de conexión
   require_once 'db.php';
   
   // Cabeceras
   header('Content-Type: application/json; charset=UTF-8');
-  header('Access-Control-Allow-Headers: Content-Type,Access-Control-Allow-Headers,Authorization,X-Requested-With');
+  header('Access-Control-Allow-Headers: Content-Type,Access-Control-Allow-Headers,Authorization,X-Requested-With');  
+  header('Access-Control-Allow-Origin: *'); // permite llamar desde cualquier sitio
+  header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'); // métodos permitidos
+
 
   if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header('HTTP/1.1 200 OK');
@@ -26,6 +33,14 @@
   // Dividir la ruta en partes
   $segments = explode('/', trim($path, '/'));
 
+
+  // valida que exista al menos un segmeno  
+  if (!isset($segments[0]) || empty($segments[0])) {
+      http_response_code(400);
+      echo json_encode(['error' => 'Ruta no especificada']);
+      exit();
+  }
+
   // Determinar el archivo PHP a cargar
   switch ($segments[0]) {
       case 'user':
@@ -36,7 +51,7 @@
           break;
       default:
           http_response_code(404);
-          echo "Ruta no encontrada.";
+          echo json_encode(['error' => 'Ruta no encontrada.']);
           break;
   }
 ?>
